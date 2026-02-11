@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Droppoint | Host Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary-accent: #059669; /* Trusting Emerald/Green for growth/income */
+      --secondary-dark: #0f172a;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #1e293b, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .login-wrapper {
+      max-width: 1050px;
+      width: 100%;
+    }
+
+    .login-card {
+      background: #020617;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+
+    /* LEFT BRAND SIDE - Updated for Location Focus */
+    .brand-side {
+      background: url('https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=2070&auto=format&fit=crop') center center;
+      background-size: cover;
+      position: relative;
+      padding: 60px;
+    }
+
+    .brand-side::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(2, 6, 23, 0.95), rgba(5, 150, 105, 0.4));
+      z-index: 1;
+    }
+
+    .brand-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-column: column;
+      justify-content: space-between;
+    }
+
+    .benefit-tag {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-left: 4px solid var(--primary-accent);
+    }
+
+    /* RIGHT FORM SIDE */
+    .form-side {
+      background: #ffffff;
+      color: #1e293b;
+      padding: 60px;
+    }
+
+    .logo-img {
+      height: 60px;
+      width: auto;
+      margin-bottom: 2rem;
+    }
+
+    .btn-google {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      transition: all 0.3s ease;
+      color: #1e293b;
+      background: #fff;
+    }
+
+    .btn-google:hover {
+      background: #f8fafc;
+      border-color: var(--primary-accent);
+    }
+
+    .partner-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-accent);
+      font-weight: 700;
+    }
+
+    .marquee-title {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .marquee-title::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .host-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .stat-item small { color: #94a3b8; font-size: 0.7rem; }
+    .stat-item div { font-weight: 700; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <div class="login-card row g-0">
+
+    <div class="col-lg-6 brand-side d-none d-lg-block">
+      <div class="brand-content d-flex flex-column justify-content-between h-100">
+        <div>
+          <img src="/images/droppointlogo.png" class="logo-img" alt="Droppoint Logo">
+          <h2 class="fw-bold text-white mb-3">Maximize Your Property's Potential.</h2>
+          
+          <div class="benefit-tag">
+            <div class="fw-bold text-white">Passive Revenue</div>
+            <small class="text-white-50">Earn monthly rent for every locker unit on your site.</small>
+          </div>
+
+          <div class="benefit-tag">
+            <div class="fw-bold text-white">Increased Footfall</div>
+            <small class="text-white-50">Attract 50+ unique daily visitors to your location.</small>
+          </div>
+        </div>
+
+        <div>
+          <div class="marquee-title">SUPPORTING PROPERTY LEADERS</div>
+         
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 form-side d-flex flex-column justify-content-center">
+      
+      <div class="mb-4">
+
+        <span class="partner-badge">Location Partner Portal</span>
+        <h3 class="fw-bold mt-2">Welcome to Droppoint </h3>
+        <p class="text-muted">Manage your locker health, view earnings, and track footfall analytics.</p>
+      </div>
+
+      <% if (locals.error) { %>
+        <div class="alert alert-danger border-0 shadow-sm" style="border-radius: 12px;">
+          <i class="fas fa-exclamation-circle me-2"></i> <%= error %>
+        </div>
+      <% } %>
+
+      <div class="d-grid gap-3">
+        <a href="/auth/google" class="btn btn-google d-flex align-items-center justify-content-center gap-3">
+          <img src="https://developers.google.com/identity/images/g-logo.png" style="height:22px;">
+          <span class="fw-semibold">Sign in with Property Account</span>
+        </a>
+      </div>
+
+      <div class="mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <p class="mb-0 fw-medium">New Host?</p>
+            <small class="text-muted">Join the smart locker revolution.</small>
+          </div>
+          <a href="/request-access" class="btn btn-outline-success btn-sm px-3" style="border-radius: 10px; font-weight: 600;">
+            Apply to Host
+          </a>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <small class="api-hint">
+          <i class="fas fa-shield-alt me-1"></i> Authorized Personnel Only. 
+          <a href="#" class="text-decoration-none text-dark ms-1 fw-bold">Support</a>
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

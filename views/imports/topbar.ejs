@@ -1,0 +1,140 @@
+<nav class="topbar d-flex align-items-center px-4">
+    <div class="d-flex align-items-center">
+        <button class="menu-toggle-btn d-lg-none me-3" id="menuToggle">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+        <div class="page-context">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">Partners</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><%= partner.companyName %></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="ms-auto d-flex align-items-center gap-2">
+        <a href="/logout" style="text-decoration: none;">
+        <div class="user-profile-dropdown">
+            <button class="btn-logout-custom">
+                <span>Sign Out</span>
+                <i class="fas fa-arrow-right-from-bracket"></i>
+            </button>
+        </div>
+        </a>
+    </div>
+</nav>
+
+<style>
+    .topbar {
+        height: 72px;
+        background: rgba(255, 255, 255, 0.8); /* Translucent effect */
+        backdrop-filter: blur(10px); /* Modern blur */
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        position: fixed;
+        top: 0;
+        left: 280px; /* Perfectly aligned with the new sidebar width */
+        right: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    /* Breadcrumb / Context Styling */
+    .breadcrumb-item {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+    .breadcrumb-item a {
+        color: #94a3b8;
+        text-decoration: none;
+    }
+    .breadcrumb-item.active {
+        color: #0f172a;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        font-size: 1.2rem;
+        line-height: 1;
+        vertical-align: middle;
+        color: #cbd5e1;
+    }
+
+    /* Icon Buttons */
+    .topbar-icon-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        color: #64748b;
+        background: transparent;
+        border: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .topbar-icon-btn:hover {
+        background: #f1f5f9;
+        color: #2563eb;
+        transform: translateY(-1px);
+    }
+
+    /* Notification Dot Indicator */
+    .notification-dot::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border: 2px solid #fff;
+        border-radius: 50%;
+    }
+
+    /* Premium Logout Button */
+    .btn-logout-custom {
+        background: #0f172a;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    .btn-logout-custom:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-logout-custom i {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle-btn {
+        background: #f1f5f9;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        color: #0f172a;
+    }
+
+    @media (max-width: 992px) { 
+        .topbar { left: 0; }
+        .btn-logout-custom span { display: none; } /* Show only icon on small screens */
+        .btn-logout-custom { padding: 10px; }
+    }
+</style>

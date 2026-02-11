@@ -1,0 +1,153 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="brand-wrapper">
+            <div class="logo-stack">
+                <i class="fas fa-cube"></i>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name"><%= partner.companyName %></span>
+                <span class="brand-tag">Partner Portal</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-content">
+        <div class="nav-section">
+            <label>Overview</label>
+            <ul class="nav-list">
+                <li><a href="#" class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="#" class="nav-item"><i class="fas fa-vault"></i> My Lockers</a></li>
+                <li><a href="#" class="nav-item"><i class="fas fa-wallet"></i> Payouts</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <label>Support & Control</label>
+            <ul class="nav-list">
+                <li><a href="#" class="nav-item"><i class="fas fa-sliders-h"></i> Configuration</a></li>
+                <li><a href="#" class="nav-item"><i class="fas fa-life-ring"></i> Help Center</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="/logout" class="logout-card">
+            <div class="user-info">
+                <p class="user-name"><%= partner.companyName %></p>
+                <p class="user-status">System Active</p>
+            </div>
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+</aside>
+
+<style>
+    :root {
+        --side-bg: #0f172a; /* Deep Midnight */
+        --side-item-active: #2563eb;
+        --side-text-muted: #94a3b8;
+        --side-text-bright: #f8fafc;
+        --side-border: rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar {
+        width: 280px;
+        height: 100vh;
+        position: fixed;
+        background: var(--side-bg);
+        display: flex;
+        flex-direction: column;
+        color: var(--side-text-bright);
+        z-index: 1100;
+        border-right: 1px solid var(--side-border);
+    }
+
+    /* Header with Logo Stack */
+    .sidebar-header {
+        padding: 24px;
+        border-bottom: 1px solid var(--side-border);
+    }
+
+    .brand-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo-stack {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .brand-name { font-weight: 700; font-size: 1rem; color: #fff; }
+    .brand-tag { font-size: 0.7rem; color: var(--side-text-muted); font-weight: 500; }
+
+    /* Nav Sections */
+    .sidebar-content { padding: 20px 16px; flex-grow: 1; }
+    .nav-section label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--side-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin: 20px 0 8px 12px;
+        display: block;
+    }
+
+    .nav-list { list-style: none; padding: 0; margin: 0; }
+    .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        color: var(--side-text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: 0.2s all ease;
+        margin-bottom: 4px;
+    }
+
+    .nav-item i { width: 20px; margin-right: 12px; font-size: 1.1rem; }
+    
+    .nav-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--side-text-bright);
+    }
+
+    .nav-item.active {
+        background: var(--side-item-active);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Footer / User Profile */
+    .sidebar-footer { padding: 16px; border-top: 1px solid var(--side-border); }
+    .logout-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        color: inherit;
+        transition: 0.2s;
+    }
+
+    .logout-card:hover { background: rgba(255, 255, 255, 0.08); }   
+    .user-name { font-size: 0.85rem; font-weight: 600; margin: 0; color: #fff; }
+    .user-status { font-size: 0.7rem; color: #10b981; margin: 0; }
+</style>
