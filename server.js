@@ -10,7 +10,7 @@ const parcel = require("./models/parcel.js");
 const LocationPartner = require("./models/LocationPartnerSchema");
 const PartnerHostingRequest = require("./models/PartnerHostingRequestSchema.js");
 const Locker = require("./models/locker.js");
-const PartnerTicket = require("./models/TicketSchema");
+const PartnerTicket = require("./models/TicketSchema.js");
 
 
 
@@ -58,6 +58,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+});
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -259,6 +264,10 @@ app.post("/request-access", async (req, res) => {
 
 app.post("/partner/tickets/new", async (req, res) => {
   try {
+      console.log("🔥 ticket route hit");
+  console.log(req.body);
+  console.log("partnerId:", req.session.partnerId);
+
     const { type, title, description, priority, relatedLocker } = req.body;
 
     if (!title || !description) {
@@ -275,7 +284,7 @@ app.post("/partner/tickets/new", async (req, res) => {
       title,
       description,
       priority: priority || "medium",
-      relatedLocker: relatedLocker || null
+     relatedLocker: relatedLocker ? relatedLocker : undefined
     });
 
     req.session.flash = {
@@ -286,7 +295,9 @@ app.post("/partner/tickets/new", async (req, res) => {
     res.redirect("/dashboard");
 
   } catch (err) {
-    console.error(err);
+     console.error("TICKET CREATE ERROR:", err);
+  return res.status(500).json(err);
+
 
     req.session.flash = {
       type: "error",

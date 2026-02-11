@@ -243,12 +243,22 @@
 <%- include("./imports/sidebar") %>
 
 <div id="main-wrapper">
+    <% if (flash) { %>
+    <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> alert-dismissible fade show mb-4" role="alert">
+      <%= flash.message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% } %>
+
+    
     <div class="partner-header-card d-flex justify-content-between align-items-center">
+        
         <div class="d-flex align-items-center gap-4">
             <div class="icon-box-metro">
                 <i class="fas fa-subway fa-2x"></i>
             </div>
             <div>
+                
                 <span class="text-muted small fw-bold text-uppercase">Partner Organization</span>
                 <h2 class="fw-bold mb-0"><%= partner.companyName %></h2>
                 <div class="text-muted small mt-1">
