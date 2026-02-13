@@ -133,79 +133,118 @@
   </style>
 </head>
 <body>
-
 <div class="card-wrapper">
   <div class="access-card">
     
-    <% if (locals.flash) { %>
-      <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> border-0 shadow-sm mb-4" style="border-radius: 12px;">
-        <%= flash.message %>
-      </div>
-    <% } %>
-
+<% if (typeof flash !== 'undefined' && flash) { %>
+  <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> border-0 shadow-sm mb-4" style="border-radius: 12px;">
+    <i class="fas <%= flash.type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle' %> me-2"></i>
+    <%= flash.message %>
+  </div>
+<% } %>
     <div class="logo">
-      <img src="/images/droppointlogo.png" alt="Droppoint">
-    </div>
+    <img src="/images/droppointlogo.png" alt="Droppoint" style="background-color: #0f172a; border-radius: 12px; padding: 10px;">    </div>
 
     <div class="text-center mb-5">
-      <h3 class="fw-bold mb-2">Apply for a Locker Installation</h3>
-      <p class="text-muted">Turn your idle space into a revenue-generating smart hub.</p>
+      <h3 class="fw-bold mb-2">Let's Get Started</h3>
+      <p class="text-muted">Tell us a bit about yourself and your space to join the network.</p>
     </div>
 
     <form method="POST" action="/request-access">
       
       <div class="section-title">
-        <i class="fas fa-building"></i> Property Details <hr>
+        <i class="fas fa-store"></i> Your Brand <hr>
       </div>
 
       <div class="row g-3 mb-4">
         <div class="col-md-6">
-          <label class="form-label">Property/Business Name</label>
-          <input name="companyName" class="form-control" placeholder="e.g. Sterling Apartments" required>
+          <label class="form-label">Property/ Business Name</label>
+          <input name="partnerName" class="form-control" placeholder="e.g. Blue Star Cafe" required>
         </div>
         <div class="col-md-6">
-          <label class="form-label">Property Type</label>
-          <select name="propertyType" class="form-select" required>
-            <option value="" selected disabled>Select Type</option>
-            <option value="residential">Apartment / Residential</option>
-            <option value="retail">Retail / Mall</option>
-            <option value="office">Corporate Office</option>
+    <label class="form-label">Property Type</label>
+    <div class="input-group">
+        <span class="input-group-text bg-light border-2 border-end-0" style="border-radius: 12px 0 0 12px; border-color: #f1f5f9;">
+            <i class="fas fa-building text-muted"></i>
+        </span>
+        <select name="propertyType" class="form-select border-start-0" style="border-radius: 0 12px 12px 0;" required>
+            <option value="" disabled selected>Select property...</option>
+            <option value="residential">Apartment / Society</option>
+            <option value="retail">Retail Store / Mall</option>
+            <option value="office">Corporate Office / Tech Park</option>
+            <option value="university">University / Campus</option>
+            <option value="transport">Metro / Fuel Station</option>
             <option value="other">Other Commercial</option>
-          </select>
+        </select>
+    </div>
+</div>
+        <div class="col-md-12">
+            <label class="form-label">How would you like to earn?</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-2 border-end-0" style="border-radius: 12px 0 0 12px; border-color: #f1f5f9;">
+                    <i class="fas fa-hand-holding-usd text-muted"></i>
+                </span>
+                <select name="revenueModel" class="form-select border-start-0" style="border-radius: 0 12px 12px 0;" required>
+                  <option value="" disabled selected>Choose a partner model...</option>
+                  <option value="revenue_share">Revenue Share</option>
+                  <option value="fixed_rent">Fixed Monthly Rent (Guaranteed income)</option>
+                  <option value="franchise">Franchise (Own the equipment)</option>
+                  <option value="hybrid">Hybrid (Rent + Revenue Share)</option>
+                </select>
+            </div>
+          </div>
+      </div>
+
+      <div class="section-title">
+        <i class="fas fa-user-circle"></i> Point of Contact <hr>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <label class="form-label">Your Name</label>
+          <input name="contactPerson" class="form-control" placeholder="Full Name" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email Address</label>
+          <input name="email" type="email" class="form-control" placeholder="name@email.com" required>
+        </div>
+        <div class="col-md-12">
+          <label class="form-label">Phone Number</label>
+          <input name="phone" class="form-control" placeholder="10-digit mobile number" required>
         </div>
       </div>
 
       <div class="section-title">
-        <i class="fas fa-user-tie"></i> Contact Information <hr>
+        <i class="fas fa-map-marked-alt"></i> Where should we install? <hr>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Site Address</label>
+        <textarea name="address" class="form-control" rows="2" placeholder="Building name, street, and landmark..." required></textarea>
       </div>
 
       <div class="row g-3 mb-4">
-        <div class="col-md-6">
-          <label class="form-label">Full Name</label>
-          <input name="contactName" class="form-control" placeholder="Ramesh Kumar" required>
+        <div class="col-md-4">
+          <label class="form-label">City</label>
+          <input name="city" class="form-control" placeholder="e.g. Hyderabad" required>
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Work Email</label>
-          <input name="email" type="email" class="form-control" placeholder="ramesh@property.com" required>
+        <div class="col-md-4">
+          <label class="form-label">State</label>
+          <input name="state" class="form-control" placeholder="e.g. Telangana" required>
         </div>
-        <div class="col-md-12">
-          <label class="form-label">Phone Number</label>
-          <input name="phone" class="form-control" placeholder="+91 9XXXXXXXXX" required>
+        <div class="col-md-4">
+          <label class="form-label">Pincode</label>
+          <input name="pincode" class="form-control" placeholder="e.g. 500001" required>
         </div>
       </div>
 
-      <div class="mb-4">
-        <label class="form-label">Property Address / City</label>
-        <textarea name="message" class="form-control" rows="2" placeholder="Tell us where you'd like to host the locker..." required></textarea>
-      </div>
-
-      <button class="btn btn-primary w-100 shadow-lg">
-        Submit Hosting Application
+      <button class="btn btn-primary w-100 shadow-lg py-3">
+        Send My Application <i class="fas fa-paper-plane ms-2 small"></i>
       </button>
 
       <div class="text-center mt-4">
         <a href="/login" class="back-link">
-          <i class="fas fa-arrow-left me-1"></i> Back to Partner Login
+          <i class="fas fa-arrow-left me-1"></i> I'm already a partner
         </a>
       </div>
 
@@ -213,7 +252,7 @@
   </div>
   
   <p class="text-center mt-4 text-white-50" style="font-size: 0.85rem;">
-    By submitting, you agree to our <a href="#" class="text-white text-decoration-none border-bottom">Partner Terms</a> and <a href="#" class="text-white text-decoration-none border-bottom">Privacy Policy</a>.
+    By sending this, you agree to our <a href="#" class="text-white text-decoration-none border-bottom">Partner Terms</a>.
   </p>
 </div>
 

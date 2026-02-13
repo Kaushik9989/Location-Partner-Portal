@@ -241,26 +241,22 @@
 
 <%- include("./imports/topbar") %>
 <%- include("./imports/sidebar") %>
-
 <div id="main-wrapper">
-    <% if (flash) { %>
+    <% if (typeof flash !== 'undefined' && flash) { %>
     <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> alert-dismissible fade show mb-4" role="alert">
       <%= flash.message %>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-  <% } %>
+    <% } %>
 
-    
     <div class="partner-header-card d-flex justify-content-between align-items-center">
-        
         <div class="d-flex align-items-center gap-4">
             <div class="icon-box-metro">
                 <i class="fas fa-subway fa-2x"></i>
             </div>
             <div>
-                
                 <span class="text-muted small fw-bold text-uppercase">Partner Organization</span>
-                <h2 class="fw-bold mb-0"><%= partner.companyName %></h2>
+                <h2 class="fw-bold mb-0"><%= partner.companyName || partner.partnerName %></h2>
                 <div class="text-muted small mt-1">
                     <i class="fas fa-user-circle me-1"></i> <%= partner.contactPerson %>
                     <i class="fas fa-map-marker-alt ms-2 me-1"></i> <%= partner.city %>, <%= partner.state %>
@@ -268,8 +264,13 @@
             </div>
         </div>
         <div class="d-flex gap-2 d-none d-md-flex">
-            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold">
-                Active Partner
+            <% 
+                let statusClass = 'bg-warning-subtle text-warning border-warning-subtle';
+                if(partner.verificationStatus === 'approved') statusClass = 'bg-success-subtle text-success border-success-subtle';
+                if(partner.verificationStatus === 'rejected') statusClass = 'bg-danger-subtle text-danger border-danger-subtle';
+            %>
+            <span class="badge <%= statusClass %> px-3 py-2 rounded-pill fw-bold text-uppercase">
+                <%= partner.verificationStatus %>
             </span>
             <button class="btn btn-outline-dark btn-sm rounded-3 px-3">Edit Profile</button>
         </div>
@@ -278,14 +279,29 @@
     <div class="income-hero shadow-sm">
         <div class="row align-items-center">
             <div class="col-lg-5">
-                <span class="text-muted small fw-bold text-uppercase">Net Earned Share</span>
+                <span class="text-muted small fw-bold text-uppercase">
+                    Your Earnings <%= (partner.revenue && partner.revenue.modelType) ? partner.revenue.modelType.replace(/_/g, ' ') : 'N/A' %>
+                </span>
                 <h1 class="revenue-amount">
-                    ₹<%= partner.revenueStats.partnerShareEarned.toLocaleString('en-IN') %>
+                    ₹<%= partner.revenueStats.totalPartnerEarned.toLocaleString('en-IN') %>
                 </h1>
                 <p class="text-muted mb-0">Aggregate revenue across <%= partner.lockers.length %> lockers</p>
             </div>
             <div class="col-lg-7 mt-4 mt-lg-0">
-                
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                        <div class="p-3 border rounded-4 bg-light">
+                            <div class="text-muted small fw-bold">GROSS VOLUME</div>
+                            <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.totalGross.toLocaleString('en-IN') %></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="p-3 border rounded-4 bg-light">
+                            <div class="text-muted small fw-bold">PAID OUT</div>
+                            <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.paidOut.toLocaleString('en-IN') %></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -297,7 +313,10 @@
             </div>
             <div>
                 <h5 class="fw-bold mb-0">Payout Pending: ₹<%= partner.revenueStats.pendingPayout.toLocaleString('en-IN') %></h5>
-                <p class="mb-0 small text-white-50">Last settlement: <%= partner.revenueStats.lastPayoutDate ? partner.revenueStats.lastPayoutDate.toDateString() : 'N/A' %></p>
+                <p class="mb-0 small text-white-50">
+                    Auto-Payout: <%= partner.revenue.settlement.autoPayout ? 'Enabled' : 'Manual' %> 
+                    • Cycle: <%= partner.revenue.settlement.payoutCycle %>
+                </p>
             </div>
         </div>
         <button class="btn-payout">Request Settlement <i class="fas fa-chevron-right ms-2"></i></button>
@@ -308,78 +327,73 @@
             <h4 class="fw-bold mb-0">Managed Units</h4>
             <p class="text-muted small">Live status of <%= partner.lockers.length %> deployed units</p>
         </div>
-        <div class="d-flex gap-2">
-
-            <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold"
-        data-bs-toggle="modal"
-        data-bs-target="#deploymentModal">
-  <i class="fas fa-plus me-2"></i>Raise request
-</button>
-        </div>
+        <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#deploymentModal">
+            <i class="fas fa-plus me-2"></i>Raise request
+        </button>
     </div>
 
-<div class="location-table-container shadow-sm">
-    <table class="table align-middle mb-0">
-        <thead>
-            <tr>
-                <th>Locker Identification</th>
-                <th>Location Details</th>
-                <th>Capacity (Booked/Total)</th>
-                <th>Operation Stats</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% partner.lockers.forEach(locker => { %>
-                <% 
-                    // Logic to calculate capacity from schema
-                    const totalCompartments = locker.compartments ? locker.compartments.length : 0;
-                    const bookedCompartments = locker.compartments ? locker.compartments.filter(c => c.isBooked).length : 0;
-                    const overstayCount = locker.compartments ? locker.compartments.filter(c => c.isOverstay).length : 0;
-                    const fillPercentage = totalCompartments > 0 ? (bookedCompartments / totalCompartments) * 100 : 0;
-                %>
+    <div class="location-table-container shadow-sm">
+        <table class="table align-middle mb-0">
+            <thead>
                 <tr>
-                    <td>
-                        <div class="fw-bold text-dark"><%= locker.lockerId %></div>
-                        <div class="extra-small text-muted" style="font-size: 0.7rem;">
-                            ID: <%= locker._id.toString().slice(-6).toUpperCase() %>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="small fw-medium"><%= locker.location.address %></div>
-                        <div class="extra-small text-muted" style="font-size: 0.75rem;">
-                            PIN: <%= locker.location.pincode %> • <%= locker.location.lat %>, <%= locker.location.lng %>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress flex-grow-1" style="height: 6px; min-width: 80px;">
-                                <div class="progress-bar <%= fillPercentage > 80 ? 'bg-danger' : 'bg-primary' %>" 
-                                     role="progressbar" 
-                                     style="width: <%= fillPercentage %>%"></div>
+                    <th>Locker Identification</th>
+                    <th>Location Details</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% partner.lockers.forEach(locker => { %>
+                    <% 
+                        // Note: Ensure lockers are populated in your Mongoose query
+                        const total = locker.compartments ? locker.compartments.length : 0;
+                        const booked = locker.compartments ? locker.compartments.filter(c => c.isBooked).length : 0;
+                        const fillPercent = total > 0 ? (booked / total) * 100 : 0;
+                    %>
+                    <tr>
+                        <td>
+                            <div class="fw-bold text-dark"><%= locker.lockerId %></div>
+                            <div class="extra-small text-muted" style="font-size: 0.7rem;">
+                                TYPE: <%= locker.lockerType || 'Standard' %>
                             </div>
-                            <span class="small fw-bold"><%= bookedCompartments %>/<%= totalCompartments %></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="d-flex gap-2"> <%= parcelsLength %>
-                       
-                        </div>
-                    </td>
-                    
-                </tr>
-            <% }) %>
-            
-            <% if(partner.lockers.length === 0) { %>
-                <tr>
-                    <td colspan="5" class="text-center py-5 text-muted">
-                        <i class="fas fa-box-open fa-3x mb-3 d-block opacity-25"></i>
-                        No lockers found for this partner schema.
-                    </td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
-</div>
+                        </td>
+                        <td>
+                            <div class="small fw-medium"><%= locker.location.address %></div>
+                            <div class="extra-small text-muted" style="font-size: 0.75rem;">
+                                <%= locker.location.pincode %> • <%= partner.city %>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1" style="height: 6px; min-width: 80px;">
+                                    <div class="progress-bar <%= fillPercent > 80 ? 'bg-danger' : 'bg-primary' %>" 
+                                         style="width: <%= fillPercent %>%"></div>
+                                </div>
+                                <span class="small fw-bold"><%= booked %>/<%= total %></span>
+                            </div>
+                        </td>
+                        <td>
+                            <% if (locker.status === 'online' || locker.isActive) { %>
+                                <span class="dot-online"></span> <span class="small fw-bold text-success">ONLINE</span>
+                            <% } else { %>
+                                <span class="dot-online" style="background-color: #94a3b8; animation: none;"></span> 
+                                <span class="small fw-bold text-muted">OFFLINE</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+                
+                <% if(partner.lockers.length === 0) { %>
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">
+                            <i class="fas fa-box-open fa-3x mb-3 d-block opacity-25"></i>
+                            No lockers assigned to this partner yet.
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

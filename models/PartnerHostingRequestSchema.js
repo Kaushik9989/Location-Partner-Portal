@@ -1,71 +1,37 @@
 const mongoose = require("mongoose");
 
 const PartnerHostingRequestSchema = new mongoose.Schema({
-
-  // ---------- PROPERTY ----------
-  companyName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-
-  propertyType: {
-    type: String,
-    enum: ["residential", "retail", "office", "other"],
-    required: true
-  },
-
+  // ---------- BASIC & COMPANY ----------
+  partnerName: { type: String, required: true, trim: true }, // Mapped from 'Partner/Brand Name'
+  companyName: { type: String, trim: true },               // Mapped from 'Registered Company Name'
+  
   // ---------- CONTACT ----------
-  contactName: {
+  contactPerson: { type: String, required: true },
+  email: { type: String, required: true, lowercase: true, trim: true },
+  phone: { type: String, required: true, trim: true },
+
+  // ---------- LOCATION ----------
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  pincode: { type: String, required: true },
+
+  // ---------- PREFERENCES ----------
+  preferredModel: {
     type: String,
-    required: true,
-    trim: true
+    enum: ["full_partner_profit", "revenue_share", "franchise", "fixed_rent", "hybrid", "custom"],
+    default: "revenue_share"
   },
 
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-    index: true
-  },
-
-  phone: {
-    type: String,
-    required: true,
-    trim: true
-  },
-
-  // ---------- LOCATION MESSAGE ----------
-  message: {
-    type: String,
-    required: true,
-    trim: true
-  },
-
-  // ---------- ADMIN REVIEW FLOW ----------
+  // ---------- ADMIN FLOW ----------
   status: {
     type: String,
     enum: ["submitted", "reviewing", "approved", "rejected"],
     default: "submitted",
     index: true
   },
+  adminNotes: String,
+  reviewedAt: Date
+}, { timestamps: true });
 
-  adminNotes: {
-    type: String,
-    default: null
-  },
-
-  reviewedAt: {
-    type: Date,
-    default: null
-  },
-
-}, {
-  timestamps: true
-});
-
-module.exports = mongoose.model(
-  "PartnerHostingRequest",
-  PartnerHostingRequestSchema
-);
+module.exports = mongoose.model("PartnerHostingRequest", PartnerHostingRequestSchema);

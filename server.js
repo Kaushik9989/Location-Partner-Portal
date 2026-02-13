@@ -13,7 +13,6 @@ const Locker = require("./models/locker.js");
 const PartnerTicket = require("./models/TicketSchema.js");
 
 
-
 const app = express();
 
 
@@ -53,6 +52,9 @@ app.use(session({
     sameSite: "lax"
   }
 }));
+
+
+
 
 
 app.use(passport.initialize());
@@ -191,29 +193,33 @@ app.get("/dashboard", async (req, res) => {
 
 
 app.get("/request-access", (req, res) => {
-    const flash = req.session.flash;
-    delete req.session.flash;
+    
     res.render("request_access", {
-    flash,
+ 
     });
 });
 
 app.post("/request-access", async (req, res) => {
   try {
     const {
-      companyName,
+      partnerName,
       propertyType,
-      contactName,
+      revenueModel, // Mapped to preferredModel
+      contactPerson,
       email,
       phone,
-      message
+      address,
+      city,
+      state,
+      pincode
     } = req.body;
 
     // ---------- VALIDATION ----------
-    if (!companyName || !propertyType || !contactName || !email || !phone || !message) {
+    // Check required fields (companyName is optional in schema, but partnerName is required)
+    if (!partnerName || !contactPerson || !email || !phone || !address || !city || !pincode) {
       req.session.flash = {
         type: "error",
-        message: "All fields are required."
+        message: "Please fill in all required location and contact details."
       };
       return res.redirect("/request-access");
     }
@@ -227,37 +233,39 @@ app.post("/request-access", async (req, res) => {
     if (existing) {
       req.session.flash = {
         type: "error",
-        message: "You already have a pending request."
+        message: "An application with this email is already under review."
       };
       return res.redirect("/request-access");
     }
 
     // ---------- CREATE ----------
     await PartnerHostingRequest.create({
-      companyName,
-      propertyType,
-      contactName,
+      partnerName,
+     propertyType,
+      contactPerson,
       email,
       phone,
-      message
+      address,
+      city,
+      state,
+      pincode,
+      preferredModel: revenueModel
     });
 
     // ---------- SUCCESS ----------
     req.session.flash = {
       type: "success",
-      message: "Request submitted. Our team will contact you soon."
+      message: "Application submitted! Our deployment team will reach out to you shortly."
     };
 
     return res.redirect("/request-access");
 
   } catch (err) {
-    console.error(err);
-
+    console.error("Hosting Request Error:", err);
     req.session.flash = {
       type: "error",
-      message: "Something went wrong. Please try again."
+      message: "Server error. Please try again or contact support."
     };
-
     return res.redirect("/request-access");
   }
 });
