@@ -373,12 +373,7 @@
                             </div>
                         </td>
                         <td>
-                            <% if (locker.status === 'online' || locker.isActive) { %>
-                                <span class="dot-online"></span> <span class="small fw-bold text-success">ONLINE</span>
-                            <% } else { %>
-                                <span class="dot-online" style="background-color: #94a3b8; animation: none;"></span> 
-                                <span class="small fw-bold text-muted">OFFLINE</span>
-                            <% } %>
+                             <span class="badge bg-success-subtle text-success">Online</span>
                         </td>
                     </tr>
                 <% }) %>

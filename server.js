@@ -162,6 +162,8 @@ app.get("/dashboard", async (req, res) => {
 
     if (!partner) {
       return res.status(404).send("Partner not found");
+      res.redirect("/");
+
     }
 
     // ---------- AVG PER LOCATION ----------
@@ -193,10 +195,10 @@ app.get("/dashboard", async (req, res) => {
 
 
 app.get("/request-access", (req, res) => {
-    
-    res.render("request_access", {
- 
-    });
+
+  res.render("request_access", {
+
+  });
 });
 
 app.post("/request-access", async (req, res) => {
@@ -241,7 +243,7 @@ app.post("/request-access", async (req, res) => {
     // ---------- CREATE ----------
     await PartnerHostingRequest.create({
       partnerName,
-     propertyType,
+      propertyType,
       contactPerson,
       email,
       phone,
@@ -272,9 +274,9 @@ app.post("/request-access", async (req, res) => {
 
 app.post("/partner/tickets/new", async (req, res) => {
   try {
-      console.log("🔥 ticket route hit");
-  console.log(req.body);
-  console.log("partnerId:", req.session.partnerId);
+    console.log("🔥 ticket route hit");
+    console.log(req.body);
+    console.log("partnerId:", req.session.partnerId);
 
     const { type, title, description, priority, relatedLocker } = req.body;
 
@@ -292,7 +294,7 @@ app.post("/partner/tickets/new", async (req, res) => {
       title,
       description,
       priority: priority || "medium",
-     relatedLocker: relatedLocker ? relatedLocker : undefined
+      relatedLocker: relatedLocker ? relatedLocker : undefined
     });
 
     req.session.flash = {
@@ -303,17 +305,60 @@ app.post("/partner/tickets/new", async (req, res) => {
     res.redirect("/dashboard");
 
   } catch (err) {
-     console.error("TICKET CREATE ERROR:", err);
-  return res.status(500).json(err);
+    console.error("TICKET CREATE ERROR:", err);
+    return res.status(500).json(err);
 
 
-    req.session.flash = {
-      type: "error",
-      message: "Could not submit request"
-    };
-
-    res.redirect("/dashboard");
+   
   }
+});
+
+// GET: View all lockers assigned to the logged-in partner
+app.get("/partner/my-lockers", async (req, res) => {
+    try {
+        // Assuming partner ID is stored in session/req.user
+        const partnerId = req.session.partnerId;
+  
+        const partner = await LocationPartner.findById(partnerId).populate("lockers");
+    console.log(partner)
+    if(!partner){
+      res.redirect("/");
+    }
+        res.render("my-lockers", {
+            partner,
+            lockers: partner.lockers,
+            title: "My Locker Fleet"
+        });
+    } catch (error) {
+        res.status(500).send("Error loading lockers");
+        console.log(error)
+    }
+});
+
+// GET: View specific locker details
+app.get("/partner/my-lockers/:lockerId", async (req, res) => {
+    try {
+             const partnerId = req.session.partnerId;
+  
+        const partner = await LocationPartner.findById(partnerId).populate("lockers");
+         if(!partner){
+      res.redirect("/");
+    }
+        const locker = await Locker.findById(req.params.lockerId);
+        // Ensure this locker actually belongs to the partner
+        if (!locker || locker.partner.toString() !== req.user._id.toString()) {
+            return res.status(403).send("Unauthorized");
+        }
+
+        res.render("locker-details", {
+          partner,
+            locker,
+            title: `Locker ${locker.lockerId}`
+        });
+    } catch (error) {
+      console.log(error);
+        res.status(500).send("Error loading locker details");
+    }
 });
 
 
