@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partner Dashboard | <%= partner.companyName %></title>
+    <title>Partner Dashboard | <%= partner.companyName || partner.partnerName %></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
@@ -28,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* Layout Container */
         #main-wrapper {
             margin-left: var(--sidebar-width);
             padding: calc(var(--topbar-height) + 32px) 40px 40px 40px !important;
@@ -36,7 +35,6 @@
             min-height: 100vh;
         }
 
-        /* --- Components --- */
         .partner-header-card {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -63,9 +61,8 @@
             border: 1px solid var(--border-color);
             border-radius: 28px;
             padding: 40px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             position: relative;
-            overflow: hidden;
         }
 
         .revenue-amount {
@@ -76,7 +73,6 @@
             margin: 8px 0;
         }
 
-        /* Payout Banner (Midnight Contrast) */
         .payout-banner {
             background: #0f172a;
             color: #fff;
@@ -86,7 +82,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
         }
 
         .btn-payout {
@@ -99,13 +94,6 @@
             transition: all 0.2s;
         }
 
-        .btn-payout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(16, 185, 129, 0.4);
-            background: #0da372;
-        }
-
-        /* Table Styling */
         .location-table-container {
             background: white;
             border-radius: 24px;
@@ -113,134 +101,19 @@
             overflow: hidden;
         }
 
-        .table thead th {
-            background: #f8fafc;
-            padding: 20px 24px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
+        .extra-small { font-size: 0.7rem; }
 
-        .table tbody td { padding: 24px; border-bottom: 1px solid #f1f5f9; }
-
-        /* Status Dot Pulse */
-        .dot-online {
-            height: 8px;
-            width: 8px;
-            background-color: var(--brand-success);
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 1);
-            animation: pulse-green 2s infinite;
-        }
-
-        @keyframes pulse-green {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* Responsive Mobile Fixes */
         @media (max-width: 992px) {
             #main-wrapper { margin-left: 0; padding: 100px 20px 20px 20px !important; }
             .payout-banner { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
-    <style>
-  /* Modal Glassmorphism & Midnight Styling */
-  #deploymentModal .modal-content {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
-  }
-
-  #deploymentModal .modal-header {
-    border-bottom: 1px solid #f1f5f9;
-    padding: 24px 32px;
-    background: #fafbfc;
-    border-radius: 24px 24px 0 0;
-  }
-
-  #deploymentModal .modal-title {
-    color: #0f172a;
-    letter-spacing: -0.02em;
-    font-size: 1.25rem;
-  }
-
-  #deploymentModal .modal-body {
-    padding: 32px;
-  }
-
-  /* Form Control Refinement */
-  #deploymentModal .form-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #64748b;
-    margin-bottom: 8px;
-  }
-
-  #deploymentModal .form-control, 
-  #deploymentModal .form-select {
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    background-color: #f8fafc;
-  }
-
-  #deploymentModal .form-control:focus, 
-  #deploymentModal .form-select:focus {
-    background-color: #ffffff;
-    border-color: var(--brand-blue);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-    outline: none;
-  }
-
-  #deploymentModal .modal-footer {
-    border-top: 1px solid #f1f5f9;
-    padding: 20px 32px;
-  }
-
-  /* Button Theming */
-  #deploymentModal .btn-submit-request {
-    background: #0f172a;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 12px 24px;
-    font-weight: 700;
-    transition: all 0.2s;
-  }
-
-  #deploymentModal .btn-submit-request:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-  }
-
-  #deploymentModal .btn-cancel {
-    color: #64748b;
-    font-weight: 600;
-    text-decoration: none;
-    background: transparent;
-    border: none;
-  }
-
-  /* Priority Indicator Colors */
-  #deploymentModal select[name="priority"] {
-    font-weight: 600;
-  }
-</style>
 </head>
 <body>
 
 <%- include("./imports/topbar") %>
 <%- include("./imports/sidebar") %>
+
 <div id="main-wrapper">
     <% if (typeof flash !== 'undefined' && flash) { %>
     <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> alert-dismissible fade show mb-4" role="alert">
@@ -252,11 +125,11 @@
     <div class="partner-header-card d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-4">
             <div class="icon-box-metro">
-                <i class="fas fa-subway fa-2x"></i>
+                <i class="fas fa-building fa-2x"></i>
             </div>
             <div>
                 <span class="text-muted small fw-bold text-uppercase">Partner Organization</span>
-                <h2 class="fw-bold mb-0"><%= partner.companyName || partner.partnerName %></h2>
+                <h2 class="fw-bold mb-0"><%= partner.partnerName %></h2>
                 <div class="text-muted small mt-1">
                     <i class="fas fa-user-circle me-1"></i> <%= partner.contactPerson %>
                     <i class="fas fa-map-marker-alt ms-2 me-1"></i> <%= partner.city %>, <%= partner.state %>
@@ -267,37 +140,31 @@
             <% 
                 let statusClass = 'bg-warning-subtle text-warning border-warning-subtle';
                 if(partner.verificationStatus === 'approved') statusClass = 'bg-success-subtle text-success border-success-subtle';
-                if(partner.verificationStatus === 'rejected') statusClass = 'bg-danger-subtle text-danger border-danger-subtle';
             %>
-            <span class="badge <%= statusClass %> px-3 py-2 rounded-pill fw-bold text-uppercase">
+            <span class="badge <%= statusClass %> px-3 py-2 rounded-pill fw-bold text-uppercase border">
                 <%= partner.verificationStatus %>
             </span>
-            <button class="btn btn-outline-dark btn-sm rounded-3 px-3">Edit Profile</button>
         </div>
     </div>
 
     <div class="income-hero shadow-sm">
         <div class="row align-items-center">
             <div class="col-lg-5">
-                <span class="text-muted small fw-bold text-uppercase">
-                    Your Earnings <%= (partner.revenue && partner.revenue.modelType) ? partner.revenue.modelType.replace(/_/g, ' ') : 'N/A' %>
-                </span>
-                <h1 class="revenue-amount">
-                    ₹<%= partner.revenueStats.totalPartnerEarned.toLocaleString('en-IN') %>
-                </h1>
-                <p class="text-muted mb-0">Aggregate revenue across <%= partner.lockers.length %> lockers</p>
+                <span class="text-muted small fw-bold text-uppercase">Total Partner Earnings</span>
+                <h1 class="revenue-amount">₹<%= partner.revenueStats.totalPartnerEarned.toLocaleString('en-IN') %></h1>
+                <p class="text-muted mb-0">Across <%= partner.lockers.length %> active units</p>
             </div>
             <div class="col-lg-7 mt-4 mt-lg-0">
                 <div class="row g-3">
                     <div class="col-6 col-md-4">
                         <div class="p-3 border rounded-4 bg-light">
-                            <div class="text-muted small fw-bold">GROSS VOLUME</div>
+                            <div class="text-muted extra-small fw-bold">GROSS VOLUME</div>
                             <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.totalGross.toLocaleString('en-IN') %></div>
                         </div>
                     </div>
                     <div class="col-6 col-md-4">
                         <div class="p-3 border rounded-4 bg-light">
-                            <div class="text-muted small fw-bold">PAID OUT</div>
+                            <div class="text-muted extra-small fw-bold">PAID OUT</div>
                             <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.paidOut.toLocaleString('en-IN') %></div>
                         </div>
                     </div>
@@ -306,16 +173,52 @@
         </div>
     </div>
 
+    <div class="row g-4 mb-4">
+        <div class="col-md-7">
+            <div class="partner-header-card h-100 mb-0">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="fas fa-receipt text-primary"></i>
+                    <h5 class="fw-bold mb-0">Revenue Model</h5>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label class="text-muted extra-small text-uppercase fw-bold d-block">Model Type</label>
+                        <span class="badge bg-primary-subtle text-primary text-capitalize px-3">
+                            <%= partner.revenue.modelType.replace(/_/g, ' ') %>
+                        </span>
+                    </div>
+                    <div class="col-sm-3 text-center border-start">
+                        <label class="text-muted extra-small text-uppercase fw-bold">Partner</label>
+                        <div class="h4 fw-bold text-success mb-0"><%= partner.revenue.rules.partnerSharePercent %>%</div>
+                    </div>
+                    <div class="col-sm-3 text-center border-start">
+                        <label class="text-muted extra-small text-uppercase fw-bold">Platform</label>
+                        <div class="h4 fw-bold text-primary mb-0"><%= partner.revenue.rules.platformSharePercent %>%</div>
+                    </div>
+                    <% if(partner.revenue.rules.fixedMonthlyRent > 0) { %>
+                    <div class="col-12 border-top pt-2 mt-3">
+                        <div class="d-flex justify-content-between">
+                            <span class="small text-muted">Fixed Monthly Rent</span>
+                            <span class="fw-bold">₹<%= partner.revenue.rules.fixedMonthlyRent %></span>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+     
+    </div>
+
     <div class="payout-banner">
         <div class="d-flex align-items-center gap-4">
-            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; background: rgba(255,255,255,0.1) !important;">
+            <div class="bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
                 <i class="fas fa-wallet text-white fa-lg"></i>
             </div>
             <div>
                 <h5 class="fw-bold mb-0">Payout Pending: ₹<%= partner.revenueStats.pendingPayout.toLocaleString('en-IN') %></h5>
                 <p class="mb-0 small text-white-50">
-                    Auto-Payout: <%= partner.revenue.settlement.autoPayout ? 'Enabled' : 'Manual' %> 
-                    • Cycle: <%= partner.revenue.settlement.payoutCycle %>
+                    Auto-Payout: <%= partner.revenue.settlement.autoPayout ? 'Enabled' : 'Disabled (Manual)' %> 
                 </p>
             </div>
         </div>
@@ -324,11 +227,11 @@
 
     <div class="d-flex justify-content-between align-items-end mb-4">
         <div>
-            <h4 class="fw-bold mb-0">Managed Units</h4>
-            <p class="text-muted small">Live status of <%= partner.lockers.length %> deployed units</p>
+            <h4 class="fw-bold mb-0">Deployed Units</h4>
+            <p class="text-muted small">Inventory management for <%= partner.lockers.length %> lockers</p>
         </div>
-        <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#deploymentModal">
-            <i class="fas fa-plus me-2"></i>Raise request
+        <button class="btn btn-primary rounded-3 px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#deploymentModal">
+            <i class="fas fa-plus me-2"></i>Request Deployment
         </button>
     </div>
 
@@ -336,54 +239,29 @@
         <table class="table align-middle mb-0">
             <thead>
                 <tr>
-                    <th>Locker Identification</th>
-                    <th>Location Details</th>
-                    <th>Capacity</th>
+                    <th class="ps-4">Locker ID</th>
+                    <th>Location</th>
+                    <th>Type</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <% partner.lockers.forEach(locker => { %>
-                    <% 
-                        // Note: Ensure lockers are populated in your Mongoose query
-                        const total = locker.compartments ? locker.compartments.length : 0;
-                        const booked = locker.compartments ? locker.compartments.filter(c => c.isBooked).length : 0;
-                        const fillPercent = total > 0 ? (booked / total) * 100 : 0;
-                    %>
                     <tr>
-                        <td>
-                            <div class="fw-bold text-dark"><%= locker.lockerId %></div>
-                            <div class="extra-small text-muted" style="font-size: 0.7rem;">
-                                TYPE: <%= locker.lockerType || 'Standard' %>
-                            </div>
+                        <td class="ps-4">
+                            <div class="fw-bold text-dark"><%= locker.$oid || locker.lockerId || 'N/A' %></div>
                         </td>
                         <td>
-                            <div class="small fw-medium"><%= locker.location.address %></div>
-                            <div class="extra-small text-muted" style="font-size: 0.75rem;">
-                                <%= locker.location.pincode %> • <%= partner.city %>
-                            </div>
+                            <div class="small fw-medium"><%= partner.city %></div>
+                            <div class="extra-small text-muted"><%= partner.pincode %></div>
                         </td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="progress flex-grow-1" style="height: 6px; min-width: 80px;">
-                                    <div class="progress-bar <%= fillPercent > 80 ? 'bg-danger' : 'bg-primary' %>" 
-                                         style="width: <%= fillPercent %>%"></div>
-                                </div>
-                                <span class="small fw-bold"><%= booked %>/<%= total %></span>
-                            </div>
-                        </td>
-                        <td>
-                             <span class="badge bg-success-subtle text-success">Online</span>
-                        </td>
+                        <td><span class="badge bg-light text-dark border">Standard</span></td>
+                        <td><span class="badge bg-success-subtle text-success">Active</span></td>
                     </tr>
                 <% }) %>
-                
                 <% if(partner.lockers.length === 0) { %>
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">
-                            <i class="fas fa-box-open fa-3x mb-3 d-block opacity-25"></i>
-                            No lockers assigned to this partner yet.
-                        </td>
+                        <td colspan="4" class="text-center py-5 text-muted">No units assigned.</td>
                     </tr>
                 <% } %>
             </tbody>
@@ -391,91 +269,6 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="deploymentModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-4">
-
-      <div class="modal-header d-flex align-items-center">
-        <div class="icon-box-metro me-3" style="width: 40px; height: 40px; border-radius: 10px;">
-            <i class="fas fa-plus-circle" style="font-size: 1rem;"></i>
-        </div>
-        <h5 class="modal-title fw-bold mb-0">
-          Request New Locker Deployment
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form method="POST" action="/partner/tickets/new">
-        <div class="modal-body">
-          <input type="hidden" name="type" value="locker_deployment">
-
-          <div class="row">
-            <div class="col-md-8 mb-4">
-              <label class="form-label fw-bold">Request Title</label>
-              <input name="title" class="form-control"
-                     placeholder="e.g.deployment at Terminal 2"
-                     required>
-            </div>
-
-            <div class="col-md-4 mb-4">
-              <label class="form-label fw-bold">Priority Level</label>
-              <select name="priority" class="form-select">
-                <option value="medium" selected>5-10days</option>
-                <option value="low">15-30days</option>
-                
-                <option value="high">Urgent</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label fw-bold">Deployment Details & Requirements</label>
-            <textarea name="description"
-              class="form-control"
-              rows="5"
-              placeholder="Please provide: Location address, expected footfall, space available (sq ft), and availability of power/internet..."
-              required></textarea>
-          </div>
-
-          <div class="mb-2">
-            <label class="form-label fw-bold">Related Locker / Cluster (optional)</label>
-            <div class="input-group">
-                <span class="input-group-text border-0 bg-transparent ps-0">
-                    <i class="fas fa-link text-muted"></i>
-                </span>
-                <select name="relatedLocker" class="form-select">
-                  <option value="">No related locker</option>
-                  <% partner.lockers.forEach(l => { %>
-                    <option value="<%= l._id %>"><%= l.lockerId %> — <%= l.location.address %></option>
-                  <% }) %>
-                </select>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
-            Discard
-          </button>
-          <button type="submit" class="btn btn-submit-request">
-            Submit Request <i class="fas fa-paper-plane ms-2 small"></i>
-          </button>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    // Logic for mobile sidebar toggle
-    document.getElementById('menuToggle').addEventListener('click', function() {
-        document.querySelector('.sidebar').classList.toggle('open');
-    });
-</script>
-
 </body>
 </html>
