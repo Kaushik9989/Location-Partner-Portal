@@ -186,13 +186,19 @@ const LocationPartnerSchema = new mongoose.Schema({
     index: true
   }],
 
-  // ---------- STATUS ----------
+  // ---------- STATUS ----------'
   googleId: String,
 
   isApproved: { type: Boolean, default: false, index: true },
   isActive: { type: Boolean, default: true, index: true },
+ stayDuration: {
+  type: Number, // minutes
+  default: 15
+}
 
 }, { timestamps: true });
+
+
 
 
 // ---------------- EXPORT ----------------

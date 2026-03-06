@@ -11,7 +11,7 @@ const LocationPartner = require("./models/LocationPartnerSchema");
 const PartnerHostingRequest = require("./models/PartnerHostingRequestSchema.js");
 const Locker = require("./models/locker.js");
 const PartnerTicket = require("./models/TicketSchema.js");
-
+const DeliveryPartner = require("./models/DeliveryPartner.js")
 
 const app = express();
 
@@ -274,9 +274,9 @@ app.post("/request-access", async (req, res) => {
 
 app.post("/partner/tickets/new", async (req, res) => {
   try {
-    console.log("🔥 ticket route hit");
-    console.log(req.body);
-    console.log("partnerId:", req.session.partnerId);
+    // console.log("🔥 ticket route hit");
+    // console.log(req.body);
+    // console.log("partnerId:", req.session.partnerId);
 
     const { type, title, description, priority, relatedLocker } = req.body;
 
@@ -320,7 +320,7 @@ app.get("/partner/my-lockers", async (req, res) => {
         const partnerId = req.session.partnerId;
   
         const partner = await LocationPartner.findById(partnerId).populate("lockers");
-    console.log(partner)
+    // console.log(partner)
     if(!partner){
       res.redirect("/");
     }
@@ -361,7 +361,77 @@ app.get("/partner/my-lockers/:lockerId", async (req, res) => {
     }
 });
 
+app.get("/admin/delivery-partners", async (req, res) => {
 
+  try {
+      const partnerId = req.session.partnerId;
+  
+        const partner = await LocationPartner.findById(partnerId).populate("lockers");
+         if(!partner){
+      res.redirect("/");
+    }
+    const partners = await DeliveryPartner
+      .find()
+      .sort({ createdAt: -1 });
+
+    res.render("deliveryPartners", {
+      partners,partner
+    });
+
+  } catch (err) {
+
+    res.send(err.message);
+
+  }
+
+});
+
+app.get("/api/delivery-partners", async (req, res) => {
+  try {
+
+    const partners = await DeliveryPartner
+      .find()
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      data: partners
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+
+  }
+});
+
+/// duration set
+
+app.post("/admin/location-partner/stay-duration", async (req,res)=>{
+  try{
+
+    const { locationPartnerId, stayDuration } = req.body;
+
+    await LocationPartner.findByIdAndUpdate(
+      locationPartnerId,
+      { stayDuration }
+    );
+
+    res.json({
+      success:true
+    });
+
+  }catch(err){
+
+    res.status(500).json({
+      success:false
+    });
+
+  }
+});
 
 
 app.get("/logout", (req, res) => {
