@@ -185,6 +185,12 @@ const LocationPartnerSchema = new mongoose.Schema({
     ref: "Locker",
     index: true
   }],
+  // ---------- DELIVERY PARTNERS ----------
+allowedDeliveryPartners: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "DeliveryPartner",
+  index: true
+}],
 
   // ---------- STATUS ----------'
   googleId: String,

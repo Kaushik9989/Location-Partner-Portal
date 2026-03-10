@@ -7,105 +7,171 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --brand-blue: #2563eb;
+            --brand-black: #111827;
             --brand-success: #10b981;
-            --panel-bg: #ffffff;
-            --body-bg: #f8fafc;
-            --text-main: #0f172a;
+            --body-bg: #ffffff;
+            --text-main: #111827;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            --sidebar-width: 280px;
-            --topbar-height: 72px;
+            --sidebar-width: 260px;
         }
 
         body { 
             background-color: var(--body-bg); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: 'Inter', sans-serif; 
             color: var(--text-main);
             overflow-x: hidden;
+            letter-spacing: -0.01em;
         }
 
         #main-wrapper {
             margin-left: var(--sidebar-width);
-            padding: calc(var(--topbar-height) + 32px) 40px 40px 40px !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 40px 60px !important;
             min-height: 100vh;
         }
 
-        .partner-header-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05);
-        }
-
-        .icon-box-metro {
-            background: linear-gradient(135deg, var(--brand-blue), #1d4ed8);
-            color: white;
-            border-radius: 18px;
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.25);
-        }
-
-        .income-hero {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            padding: 40px;
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .revenue-amount {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            color: var(--brand-success);
-            margin: 8px 0;
-        }
-
-        .payout-banner {
-            background: #0f172a;
-            color: #fff;
-            border-radius: 24px;
-            padding: 28px 36px;
+        /* Header Style */
+        .page-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 32px;
             margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .btn-payout {
-            background: var(--brand-success);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 14px;
-            font-weight: 700;
-            transition: all 0.2s;
+        .icon-box-minimal {
+            width: 54px;
+            height: 54px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-black);
+            font-size: 1.25rem;
         }
 
-        .location-table-container {
-            background: white;
-            border-radius: 24px;
+        /* Revenue Metrics */
+        .revenue-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .revenue-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--brand-black);
+            margin: 0;
+        }
+
+        .stat-card-minimal {
+            padding: 20px;
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            height: 100%;
+        }
+
+        /* Payout Strip */
+        .payout-strip {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin: 48px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Minimal Table */
+        .table-container-minimal {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             overflow: hidden;
         }
 
-        .extra-small { font-size: 0.7rem; }
+        .table-minimal {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table-minimal thead th {
+            background: #f8fafc;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            padding: 14px 24px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-minimal tbody td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        /* Buttons */
+        .btn-black {
+            background: var(--brand-black);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn-black:hover {
+            opacity: 0.9;
+            color: #ffffff;
+        }
+
+        .btn-outline-minimal {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--brand-black);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-minimal:hover {
+            background: #f8fafc;
+            border-color: var(--brand-black);
+        }
+
+        .status-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .status-active { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
 
         @media (max-width: 992px) {
-            #main-wrapper { margin-left: 0; padding: 100px 20px 20px 20px !important; }
-            .payout-banner { flex-direction: column; gap: 20px; text-align: center; }
+            #main-wrapper { margin-left: 0; padding: 40px 20px !important; }
+            .payout-strip { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
 </head>
@@ -115,153 +181,93 @@
 <%- include("./imports/sidebar") %>
 
 <div id="main-wrapper">
-    <% if (typeof flash !== 'undefined' && flash) { %>
-    <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> alert-dismissible fade show mb-4" role="alert">
-      <%= flash.message %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    <% } %>
-
-    <div class="partner-header-card d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center gap-4">
-            <div class="icon-box-metro">
-                <i class="fas fa-building fa-2x"></i>
+    <div class="page-header mt-5">
+        <div class="d-flex align-items-center gap-3">
+            <div class="icon-box-minimal">
+                <i class="fas fa-building"></i>
             </div>
             <div>
-                <span class="text-muted small fw-bold text-uppercase">Partner Organization</span>
-                <h2 class="fw-bold mb-0"><%= partner.partnerName %></h2>
-                <div class="text-muted small mt-1">
-                    <i class="fas fa-user-circle me-1"></i> <%= partner.contactPerson %>
-                    <i class="fas fa-map-marker-alt ms-2 me-1"></i> <%= partner.city %>, <%= partner.state %>
+                <span class="revenue-label">Organization</span>
+                <h3 class="fw-bold mb-0"><%= partner.partnerName %></h3>
+                <div class="text-muted extra-small mt-1">
+                    <i class="fas fa-map-marker-alt me-1"></i> <%= partner.city %>, <%= partner.state %>
                 </div>
             </div>
         </div>
-        <div class="d-flex gap-2 d-none d-md-flex">
-            <% 
-                let statusClass = 'bg-warning-subtle text-warning border-warning-subtle';
-                if(partner.verificationStatus === 'approved') statusClass = 'bg-success-subtle text-success border-success-subtle';
-            %>
-            <span class="badge <%= statusClass %> px-3 py-2 rounded-pill fw-bold text-uppercase border">
-                <%= partner.verificationStatus %>
-            </span>
+        <div>
+            <span class="status-pill status-active"><%= partner.verificationStatus %></span>
         </div>
     </div>
 
-    <div class="income-hero shadow-sm">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-                <span class="text-muted small fw-bold text-uppercase">Total Partner Earnings</span>
-                <h1 class="revenue-amount">₹<%= partner.revenueStats.totalPartnerEarned.toLocaleString('en-IN') %></h1>
-                <p class="text-muted mb-0">Across <%= partner.lockers.length %> active units</p>
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <span class="revenue-label">Total Partner Earnings</span>
+            <h1 class="revenue-amount">₹<%= partner.revenueStats.totalPartnerEarned.toLocaleString('en-IN') %></h1>
+            <p class="text-muted small mt-2">Aggregated revenue from <%= partner.lockers.length %> lockers</p>
+        </div>
+        <div class="col-lg-3">
+            <div class="stat-card-minimal">
+                <span class="revenue-label">Gross Volume</span>
+                <div class="h4 fw-bold mb-0">₹<%= partner.revenueStats.totalGross.toLocaleString('en-IN') %></div>
             </div>
-            <div class="col-lg-7 mt-4 mt-lg-0">
-                <div class="row g-3">
-                    <div class="col-6 col-md-4">
-                        <div class="p-3 border rounded-4 bg-light">
-                            <div class="text-muted extra-small fw-bold">GROSS VOLUME</div>
-                            <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.totalGross.toLocaleString('en-IN') %></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4">
-                        <div class="p-3 border rounded-4 bg-light">
-                            <div class="text-muted extra-small fw-bold">PAID OUT</div>
-                            <div class="h5 mb-0 fw-bold">₹<%= partner.revenueStats.paidOut.toLocaleString('en-IN') %></div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="stat-card-minimal">
+                <span class="revenue-label">Revenue Share</span>
+                <div class="h4 fw-bold mb-0"><%= partner.revenue.rules.partnerSharePercent %>%</div>
+                <div class="extra-small text-muted mt-1">Partner Proportion</div>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-7">
-            <div class="partner-header-card h-100 mb-0">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <i class="fas fa-receipt text-primary"></i>
-                    <h5 class="fw-bold mb-0">Revenue Model</h5>
-                </div>
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <label class="text-muted extra-small text-uppercase fw-bold d-block">Model Type</label>
-                        <span class="badge bg-primary-subtle text-primary text-capitalize px-3">
-                            <%= partner.revenue.modelType.replace(/_/g, ' ') %>
-                        </span>
-                    </div>
-                    <div class="col-sm-3 text-center border-start">
-                        <label class="text-muted extra-small text-uppercase fw-bold">Partner</label>
-                        <div class="h4 fw-bold text-success mb-0"><%= partner.revenue.rules.partnerSharePercent %>%</div>
-                    </div>
-                    <div class="col-sm-3 text-center border-start">
-                        <label class="text-muted extra-small text-uppercase fw-bold">Platform</label>
-                        <div class="h4 fw-bold text-primary mb-0"><%= partner.revenue.rules.platformSharePercent %>%</div>
-                    </div>
-                    <% if(partner.revenue.rules.fixedMonthlyRent > 0) { %>
-                    <div class="col-12 border-top pt-2 mt-3">
-                        <div class="d-flex justify-content-between">
-                            <span class="small text-muted">Fixed Monthly Rent</span>
-                            <span class="fw-bold">₹<%= partner.revenue.rules.fixedMonthlyRent %></span>
-                        </div>
-                    </div>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-
-     
-    </div>
-
-    <div class="payout-banner">
+    <div class="payout-strip">
         <div class="d-flex align-items-center gap-4">
-            <div class="bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
-                <i class="fas fa-wallet text-white fa-lg"></i>
+            <div class="icon-box-minimal" style="width: 44px; height: 44px; font-size: 1rem;">
+                <i class="fas fa-wallet"></i>
             </div>
             <div>
-                <h5 class="fw-bold mb-0">Payout Pending: ₹<%= partner.revenueStats.pendingPayout.toLocaleString('en-IN') %></h5>
-                <p class="mb-0 small text-white-50">
-                    Auto-Payout: <%= partner.revenue.settlement.autoPayout ? 'Enabled' : 'Disabled (Manual)' %> 
-                </p>
+                <span class="revenue-label" style="margin-bottom: 0;">Unsettled Balance</span>
+                <div class="h5 fw-bold mb-0">₹<%= partner.revenueStats.pendingPayout.toLocaleString('en-IN') %></div>
             </div>
         </div>
-        <button class="btn-payout">Request Settlement <i class="fas fa-chevron-right ms-2"></i></button>
+        <button class="btn-black">Request Settlement <i class="fas fa-arrow-right ms-2 small"></i></button>
     </div>
 
     <div class="d-flex justify-content-between align-items-end mb-4">
         <div>
-            <h4 class="fw-bold mb-0">Deployed Units</h4>
-            <p class="text-muted small">Inventory management for <%= partner.lockers.length %> lockers</p>
+            <h5 class="fw-bold mb-0">Hardware Fleet</h5>
+            <p class="text-muted small mb-0">Management of active deployment units</p>
         </div>
-        <button class="btn btn-primary rounded-3 px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#deploymentModal">
+        <button class="btn-outline-minimal" data-bs-toggle="modal" data-bs-target="#deploymentModal">
             <i class="fas fa-plus me-2"></i>Request Deployment
         </button>
     </div>
 
-    <div class="location-table-container shadow-sm">
-        <table class="table align-middle mb-0">
+    <div class="table-container-minimal">
+        <table class="table-minimal">
             <thead>
                 <tr>
-                    <th class="ps-4">Locker ID</th>
-                    <th>Location</th>
-                    <th>Type</th>
+                    <th>Locker ID</th>
+                    <th>Location Details</th>
+                    <th>Configuration</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <% partner.lockers.forEach(locker => { %>
                     <tr>
-                        <td class="ps-4">
-                            <div class="fw-bold text-dark"><%= locker.$oid || locker.lockerId || 'N/A' %></div>
-                        </td>
+                        <td class="fw-bold"><%= locker.lockerId || 'N/A' %></td>
                         <td>
-                            <div class="small fw-medium"><%= partner.city %></div>
+                            <div class="fw-medium"><%= partner.city %></div>
                             <div class="extra-small text-muted"><%= partner.pincode %></div>
                         </td>
-                        <td><span class="badge bg-light text-dark border">Standard</span></td>
-                        <td><span class="badge bg-success-subtle text-success">Active</span></td>
+                        <td><span class="text-muted small">Standard Smart Locker</span></td>
+                        <td><span class="status-pill status-active">Active</span></td>
                     </tr>
                 <% }) %>
                 <% if(partner.lockers.length === 0) { %>
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">No units assigned.</td>
+                        <td colspan="4" class="text-center py-5 text-muted small">No active units deployed.</td>
                     </tr>
                 <% } %>
             </tbody>

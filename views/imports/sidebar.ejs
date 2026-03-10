@@ -5,7 +5,7 @@
                 <i class="fas fa-cube"></i>
             </div>
             <div class="brand-text">
-                <span class="brand-name"><%= partner.companyName %></span>
+                <span class="brand-name"><%= partner.partnerName %></span>
                 <span class="brand-tag">Partner Portal</span>
             </div>
         </div>
@@ -15,134 +15,179 @@
         <div class="nav-section">
             <label>Overview</label>
             <ul class="nav-list">
-                <li><a href="/dashboard" class="nav-item "><i class="fas fa-chart-pie"></i> Dashboard</a></li>
-                <li><a href="/partner/my-lockers" class="nav-item "><i class="fas fa-vault"></i> My Lockers</a></li>
-                  <li><a href="/admin/delivery-partners" class="nav-item "><i class="fa-solid fa-user-check"></i>Delivery Partners</a></li>
-                
+                <li><a href="/dashboard" class="nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="/partner/my-lockers" class="nav-item"><i class="fas fa-vault"></i> My Lockers</a></li>
+                <li><a href="/admin/delivery-partners" class="nav-item "><i class="fa-solid fa-user-check"></i> Delivery Partners</a></li>
             </ul>
         </div>
-
-      
     </div>
 
     <div class="sidebar-footer">
         <a href="/logout" class="logout-card">
             <div class="user-info">
                 <p class="user-name"><%= partner.companyName %></p>
-                <p class="user-status">System Active</p>
+                <p class="user-status"><span class="status-dot"></span> System Active</p>
             </div>
             <i class="fas fa-sign-out-alt"></i>
         </a>
     </div>
 </aside>
-
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     :root {
-        --side-bg: #0f172a; /* Deep Midnight */
-        --side-item-active: #2563eb;
-        --side-text-muted: #94a3b8;
-        --side-text-bright: #f8fafc;
-        --side-border: rgba(255, 255, 255, 0.06);
+        --side-bg: #ffffff;
+        --side-text-main: #111827; /* Near Black */
+        --side-text-muted: #64748b; /* Slate Gray */
+        --side-item-hover: #f1f5f9;
+        --side-item-active: #111827; /* Black background for active */
+        --side-border: #e2e8f0;
+        --sidebar-width: 260px;
     }
 
     .sidebar {
-        width: 280px;
+        width: var(--sidebar-width);
         height: 100vh;
         position: fixed;
         background: var(--side-bg);
         display: flex;
         flex-direction: column;
-        color: var(--side-text-bright);
+        color: var(--side-text-main);
         z-index: 1100;
         border-right: 1px solid var(--side-border);
+        font-family: 'Inter', sans-serif;
     }
 
-    /* Header with Logo Stack */
+    /* Header: Clean & Compact */
     .sidebar-header {
-        padding: 24px;
+        padding: 20px 16px;
         border-bottom: 1px solid var(--side-border);
     }
 
     .brand-wrapper {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
     }
 
     .logo-stack {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        border-radius: 12px;
+        width: 32px;
+        height: 32px;
+        background: #111827;
+        color: #fff;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        font-size: 1rem;
     }
 
     .brand-text {
-        display: flex;
-        flex-direction: column;
         line-height: 1.2;
     }
 
-    .brand-name { font-weight: 700; font-size: 1rem; color: #fff; }
-    .brand-tag { font-size: 0.7rem; color: var(--side-text-muted); font-weight: 500; }
+    .brand-name { 
+        font-weight: 600; 
+        font-size: 0.9rem; 
+        color: var(--side-text-main); 
+        display: block;
+    }
 
-    /* Nav Sections */
-    .sidebar-content { padding: 20px 16px; flex-grow: 1; }
+    .brand-tag { 
+        font-size: 0.7rem; 
+        color: var(--side-text-muted); 
+    }
+
+    /* Nav: Minimalist padding and items */
+    .sidebar-content { 
+        padding: 12px 8px; 
+        flex-grow: 1; 
+    }
+
     .nav-section label {
         font-size: 0.65rem;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--side-text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin: 20px 0 8px 12px;
+        letter-spacing: 0.05em;
+        margin: 16px 0 8px 12px;
         display: block;
     }
 
     .nav-list { list-style: none; padding: 0; margin: 0; }
+    
     .nav-item {
         display: flex;
         align-items: center;
-        padding: 12px 16px;
+        padding: 8px 12px;
         color: var(--side-text-muted);
         text-decoration: none;
+        font-size: 0.875rem;
         font-weight: 500;
-        border-radius: 12px;
-        transition: 0.2s all ease;
-        margin-bottom: 4px;
+        border-radius: 6px;
+        transition: 0.15s ease;
+        margin-bottom: 2px;
     }
 
-    .nav-item i { width: 20px; margin-right: 12px; font-size: 1.1rem; }
+    .nav-item i { 
+        width: 18px; 
+        margin-right: 10px; 
+        font-size: 1rem; 
+        opacity: 0.8;
+    }
     
     .nav-item:hover {
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--side-text-bright);
+        background: var(--side-item-hover);
+        color: var(--side-text-main);
     }
 
     .nav-item.active {
         background: var(--side-item-active);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        color: #ffffff;
     }
 
-    /* Footer / User Profile */
-    .sidebar-footer { padding: 16px; border-top: 1px solid var(--side-border); }
+    .nav-item.active i {
+        opacity: 1;
+    }
+
+    /* Footer: User Profile */
+    .sidebar-footer { 
+        padding: 12px; 
+        border-top: 1px solid var(--side-border); 
+    }
+
     .logout-card {
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 12px;
-        padding: 12px;
+        padding: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         text-decoration: none;
         color: inherit;
+        border-radius: 8px;
         transition: 0.2s;
     }
 
-    .logout-card:hover { background: rgba(255, 255, 255, 0.08); }   
-    .user-name { font-size: 0.85rem; font-weight: 600; margin: 0; color: #fff; }
-    .user-status { font-size: 0.7rem; color: #10b981; margin: 0; }
+    .logout-card:hover { background: var(--side-item-hover); }
+
+    .user-name { font-size: 0.8rem; font-weight: 600; margin: 0; color: var(--side-text-main); }
+    
+    .user-status { 
+        font-size: 0.7rem; 
+        color: var(--side-text-muted); 
+        margin: 0; 
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        background: #10b981;
+        border-radius: 50%;
+    }
+
+    .logout-card i {
+        color: var(--side-text-muted);
+        font-size: 0.9rem;
+    }
 </style>

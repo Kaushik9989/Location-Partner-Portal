@@ -161,8 +161,9 @@ app.get("/dashboard", async (req, res) => {
       .populate("lockers");
 
     if (!partner) {
+       res.redirect("/");
       return res.status(404).send("Partner not found");
-      res.redirect("/");
+     
 
     }
 
@@ -362,40 +363,50 @@ app.get("/partner/my-lockers/:lockerId", async (req, res) => {
 });
 
 app.get("/admin/delivery-partners", async (req, res) => {
-
   try {
-      const partnerId = req.session.partnerId;
-  
-        const partner = await LocationPartner.findById(partnerId).populate("lockers");
-         if(!partner){
-      res.redirect("/");
+
+    const partnerId = req.session.partnerId;
+
+    const partner = await LocationPartner
+      .findById(partnerId)
+      .populate("lockers")
+      .populate("allowedDeliveryPartners");
+
+    if (!partner) {
+      return res.redirect("/");
     }
-    const partners = await DeliveryPartner
-      .find()
-      .sort({ createdAt: -1 });
+
+    const partners = partner.allowedDeliveryPartners;
 
     res.render("deliveryPartners", {
-      partners,partner
+      partners,
+      partner
     });
 
   } catch (err) {
-
     res.send(err.message);
-
   }
-
 });
 
 app.get("/api/delivery-partners", async (req, res) => {
   try {
 
-    const partners = await DeliveryPartner
-      .find()
-      .sort({ createdAt: -1 });
+    const partnerId = req.session.partnerId;
+
+    const partner = await LocationPartner
+      .findById(partnerId)
+      .populate("allowedDeliveryPartners");
+
+    if (!partner) {
+      return res.status(404).json({
+        success: false,
+        message: "Location partner not found"
+      });
+    }
 
     res.json({
       success: true,
-      data: partners
+      data: partner.allowedDeliveryPartners
     });
 
   } catch (err) {
@@ -407,7 +418,6 @@ app.get("/api/delivery-partners", async (req, res) => {
 
   }
 });
-
 /// duration set
 
 app.post("/admin/location-partner/stay-duration", async (req,res)=>{
