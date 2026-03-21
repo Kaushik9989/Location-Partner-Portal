@@ -12,7 +12,7 @@ const PartnerHostingRequest = require("./models/PartnerHostingRequestSchema.js")
 const Locker = require("./models/locker.js");
 const PartnerTicket = require("./models/TicketSchema.js");
 const DeliveryPartner = require("./models/DeliveryPartner.js")
-
+const User = require("./models/user.js");
 const app = express();
 
 
@@ -442,6 +442,35 @@ app.post("/admin/location-partner/stay-duration", async (req,res)=>{
 
   }
 });
+
+app.get("/admin/users", async (req, res) => {
+  try {
+    const partnerId = req.session.partnerId;
+
+    if (!partnerId) {
+      return res.status(401).send("Unauthorized: No partner session");
+    }
+     const partner = await LocationPartner
+      .findById(partnerId);
+     
+
+    const users = await User.find({
+      locationPartners: partnerId
+    })
+    .select("username phone email createdAt")
+    .lean();
+
+    return res.render("partner-users", {
+      users,partner
+    });
+
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+
 
 
 app.get("/logout", (req, res) => {
