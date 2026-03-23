@@ -67,7 +67,7 @@
                         <thead>
                             <tr>
                                 <th>Box ID</th>
-                                <th>Hardware Status</th>
+                                
                                 <th>Booking Status</th>
                                 <th>Size</th>
                                 <th>Parcel/User Info</th>
@@ -78,18 +78,12 @@
                             <% locker.compartments.forEach(comp => { %>
                                 <tr>
                                     <td class="fw-bold text-dark"><%= comp.compartmentId %></td>
+                                   
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas <%= comp.isLocked ? 'fa-lock text-muted' : 'fa-lock-open text-danger animate-pulse' %> me-2"></i>
-                                            <span class="small fw-medium"><%= comp.isLocked ? 'Secure' : 'Open' %></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <% if (comp.currentParcelId) { %>
+                                        <% if (comp.isBooked) { %>
                                             <span class="status-pill bg-danger-subtle text-danger">Occupied</span>
-                                        <% } else if (comp.isBooked) { %>
-                                            <span class="status-pill bg-warning-subtle text-warning">Booked</span>
-                                        <% } else { %>
+                                       
+                                              <% } else { %>
                                             <span class="status-pill bg-success-subtle text-success">Available</span>
                                         <% } %>
                                     </td>
