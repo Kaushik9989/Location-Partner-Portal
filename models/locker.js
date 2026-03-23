@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const CompartmentSchema = new mongoose.Schema({
   compartmentId: String,
+  cname : String,
   isLocked: { type: Boolean, default: true },
   isBooked: { type: Boolean, default: false },
   isOverstay : {type : Boolean, default: false},
