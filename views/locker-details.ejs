@@ -70,7 +70,7 @@
                                 
                                 <th>Booking Status</th>
                                 <th>Size</th>
-                                <th>Parcel/User Info</th>
+                                
                                 <th class="text-end">Overstay</th>
                             </tr>
                         </thead>
@@ -90,16 +90,7 @@
                                     <td>
                                         <span class="badge bg-light text-dark border text-capitalize"><%= comp.size %></span>
                                     </td>
-                                    <td>
-                                        <% if (comp.bookingInfo.recieverPhone) { %>
-                                            <div class="small fw-bold text-dark"><%= comp.bookingInfo.recieverName %></div>
-                                            <div class="extra-small text-muted"><%= comp.bookingInfo.recieverPhone %></div>
-                                        <% } else if (comp.currentParcelId) { %>
-                                            <code class="extra-small">PARCEL: <%= comp.currentParcelId %></code>
-                                        <% } else { %>
-                                            <span class="text-muted small">---</span>
-                                        <% } %>
-                                    </td>
+                                   
                                     <td class="text-end">
                                         <% if (comp.isOverstay) { %>
                                             <span class="badge bg-danger rounded-pill" title="Parcel exceeds pickup time limit">
